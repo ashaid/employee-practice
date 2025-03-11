@@ -19,3 +19,5 @@
 - `pnpm i`
 - `npm run dev`
 - Backend runs on: http://localhost:3000
+
+The database is empty by default. You can add a test user by running index.ts
