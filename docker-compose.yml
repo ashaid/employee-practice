@@ -1,0 +1,29 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+    container_name: express-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # - JWT_SECRET=your_jwt_secret
+    volumes:
+      # For SQLite database persistence
+      - ./server/data:/usr/src/app/data
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    container_name: react-client
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    environment:
+      # These must be prefixed with VITE_ to be accessible in the client
+      - VITE_API_URL=http://localhost:8080

@@ -1,0 +1,28 @@
+FROM node:20-alpine
+
+# Install pnpm
+RUN npm install -g pnpm@10.5.2
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies
+RUN pnpm install
+
+# Copy all files
+COPY . .
+
+# Build app
+RUN pnpm build
+
+# Install serve to run the application
+RUN npm install -g serve
+
+# Expose port
+EXPOSE 5173
+
+# Start the application
+CMD ["serve", "-s", "dist", "-l", "5173"]
